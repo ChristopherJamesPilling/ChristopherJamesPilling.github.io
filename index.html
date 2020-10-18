@@ -1,12 +1,64 @@
-<!doctype html>
-
-<html lang="en">
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/web-animations/latest/web-animations.min.js"></script>
+<style>
+body {
+  background: #eee;
+}
     
-  <head>
-    <title>How very exciting</title>
-  </head>
+p {
+  text-align: center;
+  font: 14px Verdana, Geneva, sans-serif;
+  color: #777;
+  position: relative;
+  top: 50vh;
 
-  <body>
-      <p>Hei snuppa!</p>
-  </body>
+ }
+.circle {
+  background: #bbb;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  top: 40vh;
+  left: 50vw;
+}
+</style>
+</head>
+    
+<body>
+    
+<script>
+'use strict';
+var layers = 3;
+var start = 2;
+for (var i = 1; i <= layers; i++) {
+  var n = i * start;
+  for (var j = 0; j < n; j++) {
+    addCircle(i, j / n);
+  }
+}
+
+function addCircle(layer, fraction) {
+  var element = document.createElement('div');
+  element.classList.add('circle');
+  element.layer = i;
+  element.fraction = n / j;
+  var rotate = 'rotate(' + (360 * element.fraction) + 'deg)';
+  var translate = 'translate(' + (element.layer * 20 - 2.5) + 'px)';
+  element.style.transform = rotate + ' ' + translate;
+  element.animate([
+    {transform: rotate + ' rotate(0deg) ' + translate},
+    {transform: rotate + ' rotate(360deg) ' + translate},
+  ], {
+    duration: 3000 * layer,
+    iterations: Infinity,
+  });
+  document.body.appendChild(element);
+}
+</script>
+    
+<p>nothing to see here</p>
+</body>
 </html>
