@@ -1,64 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://cdn.jsdelivr.net/web-animations/latest/web-animations.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Codystar&display=swap" rel="stylesheet">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9KYVG3671M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-9KYVG3671M');
+</script>
 <style>
 body {
   background: #eee;
+  vertical-align: middle;
 }
-    
-p {
+
+.heading {
+  font-weight: 200;
+  font-size: 1.8em;
+  font-family: 'Codystar', cursive;
   text-align: center;
-  font: 14px Verdana, Geneva, sans-serif;
-  color: #777;
+  word-wrap: break-word;
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
   position: relative;
   top: 50vh;
-
- }
-.circle {
-  background: #bbb;
-  border-radius: 50%;
-  width: 8px;
-  height: 8px;
-  position: absolute;
-  top: 40vh;
-  left: 50vw;
 }
+
+.heading .letter {
+  display: inline-block;
+  line-height: 1em;
+  vertical-align: middle;
+}
+
 </style>
 </head>
     
 <body>
+
+
+<h1 class="heading">Christopher</h1>
+
     
 <script>
-'use strict';
-var layers = 3;
-var start = 2;
-for (var i = 1; i <= layers; i++) {
-  var n = i * start;
-  for (var j = 0; j < n; j++) {
-    addCircle(i, j / n);
-  }
-}
+// Wrap every letter in a span
+var textWrapper = document.querySelector('.heading');
+textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
 
-function addCircle(layer, fraction) {
-  var element = document.createElement('div');
-  element.classList.add('circle');
-  element.layer = i;
-  element.fraction = n / j;
-  var rotate = 'rotate(' + (360 * element.fraction) + 'deg)';
-  var translate = 'translate(' + (element.layer * 20 - 2.5) + 'px)';
-  element.style.transform = rotate + ' ' + translate;
-  element.animate([
-    {transform: rotate + ' rotate(0deg) ' + translate},
-    {transform: rotate + ' rotate(360deg) ' + translate},
-  ], {
-    duration: 3000 * layer,
-    iterations: Infinity,
+anime.timeline({loop: true})
+  .add({
+    targets: '.heading .letter',
+    translateX: [40,0],
+    translateZ: 0,
+    opacity: [0,1],
+    easing: "easeOutExpo",
+    duration: 3000,
+    delay: (el, i) => 500 + 30 * i
+  }).add({
+    targets: '.heading .letter',
+    translateX: [0,-30],
+    opacity: [1,0],
+    easing: "easeInExpo",
+    duration: 2100,
+    delay: (el, i) => 100 + 30 * i
   });
-  document.body.appendChild(element);
-}
-</script>
+
+</script>  
     
-<p>nothing to see here</p>
+     
 </body>
 </html>
