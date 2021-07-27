@@ -2,164 +2,9 @@
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<link href="/Users/chrispilling/Desktop/Projects/Kearney/rst.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.1/dist/chart.min.js"></script>
-<style>
-    * {
-        box-sizing: border-box;
-    }
-    
-    body {
-        background-color: #fafafa;
-    }
-    
-    #resiliencecompass {
-        background-color: #ffffff;
-        margin: 0px auto;
-        font-family: Raleway;
-        padding: 20px 0px;
-        max-width: 700px;
-        min-height: 500px;
-    }
-    
-    h1 {
-        text-align: center;
-    }
-    
-    input {
-        margin-top: 30px;
-        padding: 10px;
-        width: 100%;
-        font-size: 17px;
-        font-family: Raleway;
-        border: 1px solid #aaaaaa;
-    }
-    /* Hide all steps by default: */
-    
-    .tab {
-        display: none;
-    }
-    
-    .tabgroup {
-        padding: 0px 20px;
-    }
-    
-    button {
-        background-color: #7823dc;
-        color: #ffffff;
-        border: none;
-        margin-top: 20px;
-        padding: 10px 20px;
-        font-size: 17px;
-        font-family: Raleway;
-        cursor: pointer;
-    }
-    
-    button:hover {
-        opacity: 0.8;
-    }
-    
-    #prevBtn {
-        background-color: #bbbbbb;
-    }
-    /* Image */
-    
-    img {
-        display: block;
-        background-color: grey;
-        height: 150px;
-        width: 150px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    /* Make circles that indicate the steps of the form: */
-    
-    .step {
-        height: 15px;
-        width: 15px;
-        margin: 0 2px;
-        background-color: #7823dc;
-        border: none;
-        border-radius: 50%;
-        display: inline-block;
-        opacity: 0.2;
-    }
-    
-    .step.active {
-        opacity: 0.5;
-    }
-    /* Mark the steps that are finished and valid: */
-    
-    .step.finish {
-        background-color: #7823dc;
-        opacity: 0.5;
-    }
-    /* Slider */
-    
-    .slider {
-        -webkit-appearance: none;
-        padding: 0px !important;
-        width: 100%;
-        height: 15px;
-        border-radius: 5px;
-        border-width: 0px !important;
-        background: #d3d3d3;
-        outline: none;
-        opacity: 0.7;
-        -webkit-transition: .2s;
-        transition: opacity .2s;
-    }
-    
-    .slider:hover {
-        opacity: 1;
-    }
-    
-    .slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        padding: 0px !important;
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        border-width: 0px !important;
-        background: #7823dc;
-        cursor: pointer;
-    }
-    
-    .slider::-moz-range-thumb {
-        width: 25px;
-        height: 25px;
-        padding: 0px !important;
-        border-radius: 50%;
-        border-width: 0px !important;
-        background: #7823dc;
-        cursor: pointer;
-    }
-    
-    .left {
-        display: block;
-        float: left;
-    }
-    
-    .middle {
-        text-align: center;
-    }
-    
-    .right {
-        display: block;
-        float: right;
-    }
-    
-    #canvascontainer {
-        width: 100%;
-        text-align: center;
-    }
-    
-    #compasschart {
-        display: inline !important;
-        width: 100%;
-        max-width: 600px;
-    }
-</style>
+
 
 <body>
 
@@ -176,14 +21,71 @@
 
         </div>
 
+        <!-- Q0 Industry -->
+        <div class="tab">
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/trc1.png" alt="product portfolio">
+            <div class="tabgroup">
+                <h1>First off, let's get to know you a bit better</h1><br>
+
+                <div class="select-container" style="z-index: 95;">
+                    <div class="custom-select">
+                        <select>
+                      <option value="0">Where are you based?</option>
+                      <option value="1">Africa</option>
+                      <option value="2">Asia</option>
+                      <option value="3">Europe</option>
+                      <option value="4">Middle East</option>
+                      <option value="6">North America</option>
+                      <option value="7">South America</option>
+                    </select>
+                    </div>
+                </div>
+
+                <div class="select-container" style="z-index: 90;">
+                    <div class="custom-select">
+                        <select>
+                      <option value="0">What industry is your company in?</option>
+                      <option value="1">Aerospace & defense</option>
+                      <option value="2">Automobiles & parts</option>
+                      <option value="3">Chemicals and industrial</option>
+                      <option value="4">Communications, media, technology</option>
+                      <option value="6">Consumer and retail (incl. food)</option>
+                      <option value="7">Financial Services</option>
+                      <option value="8">Health</option>
+                      <option value="9">Professional and business support services</option>
+                      <option value="10">Transportation and travel</option>
+                      <option value="11">Utilities, oil & gas</option>
+                      <option value="12">Other</option>
+                    </select>
+                    </div>
+                </div>
+
+                <div class="select-container" style="z-index: 85;">
+                    <div class="custom-select">
+                        <select>
+                      <option value="0">What is your companies annual revenue?</option>
+                      <option value="1">< 1 Billion USD</option>
+                      <option value="2">> 1 up to 10 Billion USD</option>
+                      <option value="3">> 10 up to 50 Billion USD</option>
+                      <option value="4">> 50 up to 75 Billion USD</option>
+                      <option value="6">> 75 up to 100 Billion USD</option>
+                      <option value="7">> 100 Billion USD</option>
+                    </select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <!-- Q1 -->
         <div class="tab">
             <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/trc1.png" alt="product portfolio">
             <div class="tabgroup">
                 <h1>Product Portfolio</h1>
-                <p>How resilient is your company with regard to the Product Portfolio? <br><br>(e.g. widely accessible and generally interchangeable product inputs, low complexity in product portfolio)</p>
-
-                <p><input type="range" min="0" max="10" value="5" class="slider" id="q1range"></p>
+                <p>Products and portfolios should be simple and designed in a way that allows for interchangeable inputs and production arrangements when supply shortages or factory interruptions occur.<br><br>e.g. widely accessible and generally interchangeable
+                    product inputs, low complexity in product portfolio)</p><br>
+                <p>How resilient is your company with regard to the Product Portfolio?</p>
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q1range"></p>
                 <p class="middle">
                     <span class="left">low</span>
                     <span>moderate</span>
@@ -198,9 +100,11 @@
             <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/trc2.png" alt="customer orientation">
             <div class="tabgroup">
                 <h1>Customer Orientation</h1>
-                <p>How resilient is your company with regard to the Customer Orientation? <br><br>(e.g. level of diversity and geographic proximity of client demand, product spend sourced from regional suppliers)</p>
-
-                <p><input type="range" min="0" max="10" value="5" class="slider" id="q2range"></p>
+                <p>A smart customer orientation is strategically designed to ensure customer demand can be met while remaining agile and flexible.<br><br>(e.g. level of diversity and geographic proximity of client demand, product spend sourced from regional
+                    suppliers)
+                </p><br>
+                <p>How resilient is your company with regard to the Customer Orientation?</p>
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q2range"></p>
                 <p class="middle">
                     <span class="left">low</span>
                     <span>moderate</span>
@@ -216,9 +120,10 @@
             <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/trc3.png" alt="customer orientation">
             <div class="tabgroup">
                 <h1>Financial Viability</h1>
-                <p>How resilient is your company with regard to the Financial Viability? <br><br>(e.g. ability to quickly access capital for manufacturing production, revenue you have on hand in cash or cash equivalents)</p>
-
-                <p><input type="range" min="0" max="10" value="5" class="slider" id="q3range"></p>
+                <p>Quickly accessing additional capital and adjusting the cost base means firms can create buffer inventories, subsidize key suppliers to ensure input materials, and remain cash positive.<br><br>(e.g. ability to quickly access capital for
+                    manufacturing production, revenue you have on hand in cash or cash equivalents)</p><br>
+                <p>How resilient is your company with regard to the Financial Viability?</p>
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q3range"></p>
                 <p class="middle">
                     <span class="left">low</span>
                     <span>moderate</span>
@@ -234,16 +139,16 @@
 
             <div class="tabgroup">
                 <h1>Go-To-Market Channels</h1>
-                <p>How resilient is your company with regard to the Go-To-Market Channels? <br><br>(e.g. ability to serve demand through multiple channels, capability to establish new go-to-market channels if primary channel become unavailable or preferences
-                    shift)
-                </p>
+                <p>A diversified customer distribution network incorporates multiple channels and a high degree of automation to increase reliability<br><br>(e.g. ability to serve demand through multiple channels, capability to establish new go-to-market
+                    channels if primary channel become unavailable or preferences shift)</p><br>
+                <p>How resilient is your company with regard to the Go-To-Market Channels?
 
-                <p><input type="range" min="0" max="10" value="5" class="slider" id="q4range"></p>
-                <p class="middle">
-                    <span class="left">low</span>
-                    <span>moderate</span>
-                    <span class="right">high</span>
-                    <p>
+                    <p><input type="range" min="1" max="10" value="6" class="slider" id="q4range"></p>
+                    <p class="middle">
+                        <span class="left">low</span>
+                        <span>moderate</span>
+                        <span class="right">high</span>
+                        <p>
             </div>
         </div>
 
@@ -253,9 +158,11 @@
             <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/trc5.png" alt="customer orientation">
             <div class="tabgroup">
                 <h1>Logistics System</h1>
-                <p>How resilient is your company with regard to the Logistics System? <br><br>(e.g. strong visibility and control over transport, ability to use multiple modes of transportation</p>
+                <p>Robust and transparent logistics systems are the holy grail for many organizations. Achieving end-to-end visibility across the supply chain, however, is only possible through close collaboration with logistics partners<br><br>(e.g. strong
+                    visibility and control over transport, ability to use multiple modes of transportation</p><br>
+                <p>How resilient is your company with regard to the Logistics System?</p>
 
-                <p><input type="range" min="0" max="10" value="5" class="slider" id="q5range"></p>
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q5range"></p>
                 <p class="middle">
                     <span class="left">low</span>
                     <span>moderate</span>
@@ -270,9 +177,11 @@
             <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/trc6.png" alt="customer orientation">
             <div class="tabgroup">
                 <h1>Manufacturing Network</h1>
-                <p>How resilient is your company with regard to the Manufacturing Network? <br><br>(e.g. production network designed with resiliency in mind, flexibility to repurpose capacity from non-core to core products, level of digital connectivity)</p>
+                <p>The resilient and responsive manufacturing network ensures production continuity by flexing production locations and products as needed. The consumer, chemicals, and electronics sectors have a good track record in this area and have succeeded
+                    in keeping operations intact despite factory shutdowns during the pandemic<br><br>(e.g. production network designed with resiliency in mind, flexibility to repurpose capacity from non-core to core products, level of digital connectivity)</p><br>
+                <p>How resilient is your company with regard to the Manufacturing Network?</p>
 
-                <p><input type="range" min="0" max="10" value="5" class="slider" id="q6range"></p>
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q6range"></p>
                 <p class="middle">
                     <span class="left">low</span>
                     <span>moderate</span>
@@ -288,9 +197,11 @@
             <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/trc7.png" alt="customer orientation">
             <div class="tabgroup">
                 <h1>Supplier Landscape</h1>
-                <p>How resilient is your company with regard to the Supplier Landscape? <br><br>(e.g. multiple and diverse sources of supply, established alternate options, visibility into supplier tiers beyond immediate suppliers)</p>
+                <p>Creating advanced supplier relationships is crucial to navigating disruption. Striking a balance between diversifying the supplier base and creating strategic partnerships with key vendors is critical to protecting the availability of
+                    essential input materials.<br><br>(e.g. multiple and diverse sources of supply, established alternate options, visibility into supplier tiers beyond immediate suppliers)</p><br>
+                <p>How resilient is your company with regard to the Supplier Landscape?</p>
 
-                <p><input type="range" min="0" max="10" value="5" class="slider" id="q7range"></p>
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q7range"></p>
                 <p class="middle">
                     <span class="left">low</span>
                     <span>moderate</span>
@@ -305,9 +216,11 @@
             <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/trc8.png" alt="planning capabilities">
             <div class="tabgroup">
                 <h1>Advanced Planning</h1>
-                <p>How resilient is your company with regard to Planning Capabilities? <br><br>(e.g. ability to rapidly sense demand shifts and initiate adaptions quickly, use of analytical tools for scenario planning)</p>
+                <p>New technologies and planning tools spanning the entire product portfolio have enabled shifts in demand to be sensed and acted on rapidly.<br><br>(e.g. ability to rapidly sense demand shifts and initiate adaptions quickly, use of analytical
+                    tools for scenario planning)</p><br>
+                <p>How resilient is your company with regard to Planning Capabilities?</p>
 
-                <p><input type="range" min="0" max="10" value="5" class="slider" id="q8range"></p>
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q8range"></p>
                 <p class="middle">
                     <span class="left">low</span>
                     <span>moderate</span>
@@ -330,12 +243,16 @@
             <div class="tabgroup">
                 <h1>Result</h1>
             </div>
-            <div class="chart-container" style="position: relative;">
+            <div class="chart-container">
                 <div id="canvascontainer">
                     <canvas id="compass" style="position: absolute;"></canvas>
                     <div><img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/compass.jpg" style="width: 100%; height: 100%;"></div>
 
                 </div>
+
+                <span id="resultdata"></span>
+                <span id="resiliencecategory"></span>
+                <span id="resiliencefailure"></span>
 
             </div>
         </div>
@@ -344,12 +261,13 @@
         <div style="overflow:auto;">
             <div id="btnplace" class="middle">
                 <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-                <button type="button" id="nextBtn" onclick="nextPrev(1)">Begin</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Start</button>
             </div>
         </div>
 
         <!-- Circles which indicates the steps of the form: -->
-        <div id="steps" style="text-align:center;margin-top:40px;">
+        <div id="steps">
+            <span class="step"></span>
             <span class="step"></span>
             <span class="step"></span>
             <span class="step"></span>
@@ -363,169 +281,7 @@
         </div>
     </form>
 
-    <script>
-        // Color scheme for compass
-        const compassColorScheme = [
-            'rgb(53, 71, 137)',
-            'rgb(54, 167, 233)',
-            'rgb(141, 196, 239)',
-            'rgb(180, 215, 245)',
-            'rgb(192, 192, 192)',
-            'rgb(170, 170, 170)',
-            'rgb(124, 124, 124)',
-            'rgb(69, 69, 69)'
-        ];
-
-        let resultData = [];
-        let baselineData = [1, 1, 1, 1, 1, 1, 1, 1];
-
-
-        var currentTab = 0; // Current tab is set to be the first tab (0)
-        showTab(currentTab); // Display the current tab
-
-        function showTab(n) {
-            // This function will display the specified tab of the form...
-            var x = document.getElementsByClassName("tab");
-            x[n].style.display = "block";
-            //... and fix the Previous/Next buttons:
-            if (n == 0) {
-                document.getElementById("prevBtn").style.display = "none";
-                document.getElementById("steps").style.display = "none";
-                document.getElementById("nextBtn").innerHTML = "Begin";
-            } else if (n == (x.length - 2)) {
-                document.getElementById("nextBtn").innerHTML = "View Result";
-                document.getElementById("prevBtn").style.display = "none";
-                document.getElementById("steps").style.display = "none";
-
-                var sliders = document.getElementsByClassName("slider");
-                var resultOutput = document.getElementById("results");
-                for (let i = 0; i < sliders.length; i++) {
-                    resultData.push(sliders[i].value);
-                }
-
-                // Generate compass/chart
-                new Chart("compass", {
-                    type: 'radar',
-                    data: {
-                        labels: [0, 1, 2, 3, 4, 5, 6, 7],
-                        datasets: [{
-                            label: 'input',
-                            data: resultData,
-                            fill: true,
-                            backgroundColor: 'rgba(120, 35, 220, 0.2)',
-                            borderWidth: 0,
-                            pointRadius: 9,
-                            pointBackgroundColor: compassColorScheme,
-                        }, {
-                            label: 'baseline',
-                            data: baselineData,
-                            fill: true,
-                            backgroundColor: 'rgba(120, 35, 220, 0.2)',
-                            borderWidth: 0,
-                            pointRadius: 9,
-                            pointBackgroundColor: compassColorScheme,
-                        }]
-                    },
-                    options: {
-                        plugins: {
-                            legend: {
-                                display: false
-                            },
-                            tooltip: {
-                                enabled: false
-                            }
-                        },
-                        scales: {
-                            r: {
-                                grid: {
-                                    display: false
-                                },
-                                pointLabels: {
-                                    display: false
-                                },
-                                ticks: {
-                                    display: false
-                                },
-                                angleLines: {
-                                    color: '#ccc'
-                                },
-                                startAngle: 22.5,
-                                min: 0,
-                                max: 13
-                            }
-                        },
-                        elements: {
-                            line: {
-                                borderWidth: 3
-                            }
-                        }
-                    }
-                });
-
-            } else if (n == (x.length - 1)) {
-                document.getElementById("nextBtn").style.display = "none";
-                document.getElementById("prevBtn").style.display = "none";
-
-            } else {
-                document.getElementById("nextBtn").innerHTML = "Next";
-                document.getElementById("prevBtn").style.display = "inline";
-                document.getElementById("steps").style.display = "block";
-            }
-            //... and run a function that will display the correct step indicator:
-            fixStepIndicator(n)
-        }
-
-        function nextPrev(n) {
-            // This function will figure out which tab to display
-            var x = document.getElementsByClassName("tab");
-            // Exit the function if any field in the current tab is invalid:
-            if (n == 1 && !validateForm()) return false;
-            // Hide the current tab:
-            x[currentTab].style.display = "none";
-            // Increase or decrease the current tab by 1:
-            currentTab = currentTab + n;
-            // if you have reached the end of the form...
-            if (currentTab >= x.length) {
-                // ... the form gets submitted:
-                document.getElementById("resiliencecompass");
-                return false;
-            }
-            // Otherwise, display the correct tab:
-            showTab(currentTab);
-        }
-
-        function validateForm() {
-            // This function deals with validation of the form fields
-            var x, y, i, valid = true;
-            x = document.getElementsByClassName("tab");
-            y = x[currentTab].getElementsByTagName("input");
-            // A loop that checks every input field in the current tab:
-            for (i = 0; i < y.length; i++) {
-                // If a field is empty...
-                if (y[i].value == "") {
-                    // add an "invalid" class to the field:
-                    y[i].className += " invalid";
-                    // and set the current valid status to false
-                    valid = false;
-                }
-            }
-            // If the valid status is true, mark the step as finished and valid:
-            if (valid) {
-                document.getElementsByClassName("step")[currentTab].className += " finish";
-            }
-            return valid; // return the valid status
-        }
-
-        function fixStepIndicator(n) {
-            // This function removes the "active" class of all steps...
-            var i, x = document.getElementsByClassName("step");
-            for (i = 0; i < x.length; i++) {
-                x[i].className = x[i].className.replace(" active", "");
-            }
-            //... and adds the "active" class on the current step:
-            x[n].className += " active";
-        }
-    </script>
+    <script src="/Users/chrispilling/Desktop/Projects/Kearney/rst.js"></script>
 
 </body>
 
