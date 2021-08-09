@@ -34,9 +34,10 @@ const handleInput = (inputElement) => {
     inputElement.addEventListener("click", setCSSProperty);
 
     // Mobile
-    inputElement.addEventListener("touchmove", handleMove);
-    inputElement.addEventListener("touchstart", handleDown);
-    inputElement.addEventListener("touchend", handleUpAndLeave);
+    inputElement.addEventListener("touchmove", handleMove, { passive: true });
+    inputElement.addEventListener("touchstart", handleDown, { passive: true });
+    inputElement.addEventListener("touchend", handleUpAndLeave, { passive: true });
+
     // Init input
     setCSSProperty();
 }
@@ -46,6 +47,7 @@ const handleInput = (inputElement) => {
 var x, i, j, l, ll, selElmnt, a, b, c;
 /* Look for any elements with the class "custom-select": */
 x = document.getElementsByClassName("custom-select");
+zZ = document.getElementById("industryContainer");
 l = x.length;
 for (i = 0; i < l; i++) {
     selElmnt = x[i].getElementsByTagName("select")[0];
@@ -95,6 +97,7 @@ for (i = 0; i < l; i++) {
         closeAllSelect(this);
         this.nextSibling.classList.toggle("select-hide");
         this.classList.toggle("select-arrow-active");
+        zZ.className = "custom-select";
     });
 }
 
@@ -139,9 +142,6 @@ const compassColorScheme = [
 ];
 
 let resultData = [];
-let baselineData = [2, 2, 2, 2, 2, 2, 2, 2];
-let resiliencecategory = "Mainstream";
-let resiliencefailure = "";
 
 var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
@@ -156,54 +156,49 @@ function showTab(n) {
         document.getElementById("steps").style.display = "none";
         document.getElementById("nextBtn").innerHTML = "Start";
     } else if (n == (x.length - 2)) {
-        document.getElementById("nextBtn").innerHTML = "View Result";
+        document.getElementById("nextBtn").innerHTML = "View Results";
         document.getElementById("prevBtn").style.display = "none";
         document.getElementById("steps").style.display = "none";
 
-        var sliders = document.getElementsByClassName("slider");
+        let sliders = document.getElementsByClassName("slider");
+        let industryOption = document.getElementById("industryOption").value;
 
-        let tempcat = 0;
-        let tempcat2 = 0;
-
-        // Category
+        // Inputs
         for (let i = 0; i < sliders.length; i++) {
             let rstvalue = sliders[i].value
             resultData.push(Number(rstvalue));
-            tempcat += rstvalue;
-            if (rstvalue < 6) {
-                resiliencecategory = "Laggard";
-            }
-            if (rstvalue < 7) {
-                tempcat2 = 1;
-            }
         }
-
-        if ((tempcat / 8) >= 8 && tempcat2 == 0) {
-            resiliencecategory = "Leader";
-        }
-
 
         // Generate compass/chart
         new Chart("compass", {
             type: 'radar',
             data: {
-                labels: [0, 1, 2, 3, 4, 5, 6, 7],
+                labels: [
+                    'Product portfolio',
+                    'Customer orientation',
+                    'Financial viability',
+                    'Go-to-market channels',
+                    'Logistics systems',
+                    'Manufacturing network',
+                    'Supplier landscape',
+                    'Advanced planning'
+                ],
                 datasets: [{
-                    label: 'input',
+                    label: 'Your assessment',
                     data: resultData,
                     fill: true,
                     backgroundColor: 'rgba(120, 35, 220, 0.2)',
                     borderWidth: 0,
                     pointRadius: 9,
-                    pointBackgroundColor: compassColorScheme,
+                    pointBackgroundColor: 'rgba(120, 35, 220, 0.6)'
                 }, {
-                    label: 'baseline',
-                    data: baselineData,
+                    label: 'Industry leaders',
+                    data: benchmark["Leader"][industryOption],
                     fill: true,
-                    backgroundColor: 'rgba(120, 35, 220, 0.2)',
+                    backgroundColor: 'rgba(192, 192, 192, 0.4)',
                     borderWidth: 0,
                     pointRadius: 9,
-                    pointBackgroundColor: 'rgba(120, 35, 220, 0.5)',
+                    pointBackgroundColor: 'rgba(192, 192, 192)'
                 }]
             },
             options: {
@@ -212,8 +207,12 @@ function showTab(n) {
                         display: false
                     },
                     tooltip: {
-                        enabled: false
+                        enabled: true
                     }
+                },
+                interaction: {
+                    intersect: true,
+                    mode: 'index',
                 },
                 scales: {
                     r: {
@@ -231,7 +230,7 @@ function showTab(n) {
                         },
                         startAngle: 22.5,
                         min: 0,
-                        max: 13
+                        max: 14
                     }
                 },
                 elements: {
@@ -242,71 +241,6 @@ function showTab(n) {
             }
         });
 
-        // Archetype
-        const archetype = ['Adapter', 'Provider', 'Provider', 'Enhancer', 'Collaborator', 'Planner']
-
-        // Adapter = 0
-        // Provider = 3 / 4
-        // Enahncer = 5
-        // Collaborator = 6
-        // Planner = 7
-
-        function sortWithIndices(toSort) {
-            toSort.splice(1, 2)
-                // Sort low to high
-            for (var i = 0; i < toSort.length; i++) {
-                toSort[i] = [toSort[i], i];
-            }
-            toSort.sort(function(left, right) {
-                return left[0] < right[0] ? -1 : 1;
-            });
-            // Extract index of each sorted number
-            toSort.sortIndices = [];
-            for (var j = 0; j < toSort.length; j++) {
-                toSort.sortIndices.push(toSort[j][1]);
-                toSort[j] = toSort[j][0];
-            }
-            // Group by number but return index.
-            grouped = toSort.reduce((r, v, i, a) => {
-                if (v === a[i - 1]) {
-                    r[r.length - 1].push(toSort.sortIndices[i]);
-                } else {
-                    r.push(v === a[i + 1] ? [toSort.sortIndices[i]] : [toSort.sortIndices[i]]);
-                }
-                return r;
-            }, []);
-
-            return grouped;
-        }
-
-        let sortResultData = [...resultData]
-
-        let sortGroup = sortWithIndices(sortResultData)
-
-        function archetypeType(resiliencecategory, sortedGroup) {
-            console.log(sortedGroup)
-            if (resiliencecategory == "Leader") {
-                sortedGroup.reverse;
-            }
-
-            if (sortedGroup[0].length == 1) {
-                // 1 option:
-                resiliencefailure = archetype[sortedGroup[0][0]]
-            } else if (sortedGroup[0].length == 2) {
-                // 2 options:
-                resiliencefailure = archetype[sortedGroup[0][0]] + "/" + archetype[sortedGroup[0][1]]
-            } else if (sortedGroup[0].length >= 3) {
-                // Greater than 3 options:
-                resiliencefailure = "Too many"
-            }
-        }
-
-        archetypeType(resiliencecategory, sortGroup)
-
-        document.getElementById("resiliencecategory").innerHTML = resiliencecategory;
-        document.getElementById("resiliencefailure").innerHTML = resiliencefailure;
-        document.getElementById("resultdata").innerHTML = resultData;
-
     } else if (n == (x.length - 1)) {
         document.getElementById("nextBtn").style.display = "none";
         document.getElementById("prevBtn").style.display = "none";
@@ -315,9 +249,9 @@ function showTab(n) {
         document.getElementById("nextBtn").innerHTML = "Next";
         document.getElementById("prevBtn").style.display = "inline";
         document.getElementById("steps").style.display = "block";
+        fixStepIndicator(n)
     }
-    //... and run a function that will display the correct step indicator:
-    fixStepIndicator(n)
+
 }
 
 function nextPrev(n) {
@@ -341,15 +275,15 @@ function nextPrev(n) {
 
 function validateForm() {
     // This function deals with validation of the form fields
-    var x, y, i, valid = true;
+    var x, y, z, i, valid = true;
     x = document.getElementsByClassName("tab");
-    y = x[currentTab].getElementsByTagName("input");
-    // A loop that checks every input field in the current tab:
-    for (i = 0; i < y.length; i++) {
-        // If a field is empty...
-        if (y[i].value == "") {
+
+    if (currentTab == 1) {
+        y = document.getElementById("industryOption");
+        if (y.value == "") {
             // add an "invalid" class to the field:
-            y[i].className += " invalid";
+            z = document.getElementById("industryContainer");
+            z.className += " invalid";
             // and set the current valid status to false
             valid = false;
         }
@@ -369,4 +303,29 @@ function fixStepIndicator(n) {
     }
     //... and adds the "active" class on the current step:
     x[n].className += " active";
+}
+
+const benchmark = {
+    "Leader": {
+        "Aerospace & Defense": [8.6, 9, 9, 9.2, 9.4, 8.4, 8.8, 9],
+        "Automobiles & Parts": [8.33, 8.67, 9, 7.67, 9, 8, 8, 7.67],
+        "Chemicals & Industrial": [8.5, 8.5, 9, 8.5, 9, 8.5, 8.5, 9],
+        "Communications, Media & Technology": [8.5, 8, 8.17, 8.33, 8.83, 8.5, 8.83, 8.17],
+        "Consumer, Retail & Food": [8.53, 8.37, 8.37, 8.42, 8.37, 8.63, 8.26, 8.79],
+        "Health": [0, 0, 0, 0, 0, 0, 0, 0],
+        "Transportation & Travel": [9, 8, 7.67, 8.33, 8.67, 8.33, 8.67, 7.67],
+        "Utilities, Oil & Gas": [8.67, 9.33, 8.67, 9, 9.67, 9, 9.33, 7.67],
+        "Other": [7, 9, 9, 8, 8, 9, 7, 8]
+    },
+    "Laggard": {
+        "Aerospace & Defense": [4.33, 6, 6, 6, 5.67, 6, 5.67, 5.67],
+        "Automobiles & Parts": [5.67, 5.47, 6, 5.13, 5.33, 5.53, 5.27, 5.93],
+        "Chemicals & Industrial": [5.78, 5.95, 5.61, 5.73, 4.92, 5.61, 4.97, 5.23],
+        "Communications, Media & Technology": [4.88, 5.84, 4.82, 6.01, 5.86, 5.93, 5.83, 5.36],
+        "Consumer, Retail & Food": [5.64, 5.64, 5.49, 5.57, 5.52, 5.07, 5.63, 5.22],
+        "Health": [4.51, 4.17, 5.15, 5.59, 5.58, 4.92, 4.8, 4.97],
+        "Transportation & Travel": [5.5, 5.75, 5.38, 5.5, 5.38, 5.63, 5.63, 5.63],
+        "Utilities, Oil & Gas": [7.25, 4.75, 5.75, 5.75, 6.75, 6.5, 5.5, 5.75],
+        "Other": [4.33, 4.67, 6, 4.33, 6.33, 6.33, 3.67, 6.67]
+    }
 }
