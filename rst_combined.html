@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.4.1/dist/chart.min.js"></script>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    
+    body {
+        background-color: #fafafa;
+    }
+    
+    #resiliencecompass {
+        background-color: #ffffff;
+        margin: 0px auto;
+        padding: 20px 0px;
+        max-width: 700px;
+        min-height: 500px;
+    }
+    
+    h2 {
+        text-align: center;
+    }
+    
+    h3 {
+        text-align: center;
+    }
+    
+    input {
+        margin-top: 30px;
+        padding: 10px;
+        width: 100%;
+        font-size: 17px;
+        border: 1px solid #aaaaaa;
+    }
+    /* Hide all steps by default: */
+    
+    .tab {
+        display: none;
+    }
+    
+    .tabgroup {
+        padding: 0px 20px;
+    }
+    /* Image */
+    
+    img {
+        display: block;
+        height: 150px;
+        width: 150px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    /* Buttons */
+    
+    button {
+        background-color: #ffffff;
+        color: #7823dc;
+        min-width: 140px;
+        border: 2px solid #7823dc;
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        -o-transition: color .3s ease;
+        -moz-transition: color .3s ease;
+        -webkit-transition: color .3s ease;
+        transition: color .3s ease;
+        outline: none;
+    }
+    
+    button:hover {
+        background-color: #7823dc;
+        color: #ffffff;
+    }
+    /* Range Formatting */
+    
+    input[type="range"] {
+        --thumbSize: 25px;
+        --trackSize: 25px;
+        --thumbBg: #af7deb;
+        --thumbBgHover: #7823dc;
+        --trackBg: #d3d3d3;
+        --progressBg: #c8a5f0;
+        --webkitProgressPercent: 0%;
+    }
+    
+    input[type="range"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        height: var(--thumbSize);
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border-width: 0px !important;
+    }
+    
+    input[type="range"]:focus {
+        outline: none;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb:hover {
+        background-color: var(--thumbBgHover);
+        -webkit-transition: background-color .3s ease;
+        transition: background-color .3s ease;
+    }
+    
+    input[type="range"]::-moz-range-thumb:hover {
+        background-color: var(--thumbBgHover);
+        -moz-transition: background-color .3s ease;
+        transition: background-color .3s ease;
+    }
+    
+    input[type="range"]::-ms-thumb:hover {
+        background-color: var(--thumbBgHover);
+        -o-transition: background-color .3s ease;
+        transition: background-color .3s ease;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: var(--thumbSize);
+        height: var(--thumbSize);
+        background-color: var(--thumbBg);
+        border-radius: calc(var(--thumbSize) / 2);
+        border: none;
+        cursor: pointer;
+        -webkit-transition: background-color .3s ease;
+        transition: background-color .3s ease;
+    }
+    
+    input[type="range"]::-moz-range-thumb {
+        -moz-appearance: none;
+        appearance: none;
+        width: var(--thumbSize);
+        height: var(--thumbSize);
+        background-color: var(--thumbBg);
+        border-radius: calc(var(--thumbSize) / 2);
+        border: none;
+        cursor: pointer;
+        -moz-transition: background-color .3s ease;
+        transition: background-color .3s ease;
+    }
+    
+    input[type="range"]::-ms-thumb {
+        -ms-appearance: none;
+        appearance: none;
+        width: var(--thumbSize);
+        height: var(--thumbSize);
+        background-color: var(--thumbBg);
+        border-radius: calc(var(--thumbSize) / 2);
+        border: none;
+        cursor: pointer;
+        -o-transition: background-color .3s ease;
+        transition: background-color .3s ease;
+    }
+    
+    input[type="range"]::-webkit-slider-runnable-track {
+        height: var(--trackSize);
+        background-image: linear-gradient( 90deg, var(--progressBg) var(--webkitProgressPercent), var(--trackBg) var(--webkitProgressPercent));
+        border-radius: calc(var(--trackSize) / 2);
+    }
+    
+    input[type="range"]::-moz-range-track {
+        height: var(--trackSize);
+        background-color: var(--trackBg);
+        border-radius: calc(var(--trackSize) / 2);
+    }
+    
+    input[type="range"]::-ms-track {
+        height: var(--trackSize);
+        background-color: var(--trackBg);
+        border-radius: calc(var(--trackSize) / 2);
+    }
+    
+    input[type="range"]::-moz-range-progress {
+        height: var(--trackSize);
+        background-color: var(--progressBg);
+        border-radius: calc(var(--trackSize) / 2) 0 0 calc(var(--trackSize) / 2);
+    }
+    
+    input[type="range"]::-ms-fill-lower {
+        height: var(--trackSize);
+        background-color: var(--progressBg);
+        border-radius: calc(var(--trackSize) / 2) 0 0 calc(var(--trackSize) / 2);
+    }
+    /* Selection Formatting */
+    
+    .select-container {
+        margin: 20px 0px;
+        position: relative;
+    }
+    
+    .custom-select {
+        position: relative;
+        width: 350px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 16px;
+        border: 1px solid #7823dc;
+    }
+    
+    .custom-select select {
+        display: none;
+        /*hide original SELECT element:*/
+    }
+    /*style the arrow inside the select element:*/
+    
+    .select-selected:after {
+        position: absolute;
+        content: "";
+        top: 14px;
+        right: 10px;
+        width: 0;
+        height: 0;
+        border: 6px solid transparent;
+        border-color: #7823dc transparent transparent transparent;
+    }
+    /*point the arrow upwards when the select box is open (active):*/
+    
+    .select-selected.select-arrow-active:after {
+        border-color: transparent transparent #7823dc transparent;
+        top: 7px;
+    }
+    /*style the items (options), including the selected item:*/
+    
+    .select-items div,
+    .select-selected {
+        color: #7823dc;
+        padding: 10px 16px;
+        border: 1px solid #7823dc;
+        cursor: pointer;
+        user-select: none;
+    }
+    /*style items (options):*/
+    
+    .select-items {
+        position: absolute;
+        background-color: #ffffff;
+        border: 1px solid #7823dc;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 100;
+    }
+    /*hide the items when the select box is closed:*/
+    
+    .select-hide {
+        display: none;
+    }
+    
+    .select-items div:hover {
+        background-color: #7823dc;
+        color: #ffffff;
+        -o-transition: color .3s ease;
+        -moz-transition: color .3s ease;
+        -webkit-transition: color .3s ease;
+        transition: color .3s ease;
+    }
+    /* Form Step */
+    
+    #steps {
+        text-align: center;
+        margin-top: 40px;
+    }
+    
+    .step,
+    .dot {
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: #7823dc;
+        border: none;
+        border-radius: 50%;
+        display: inline-block;
+        opacity: 0.2;
+    }
+    
+    .step.active {
+        opacity: 0.5;
+    }
+    /* Mark the steps that are finished and valid: */
+    
+    .step.finish {
+        background-color: #7823dc;
+        opacity: 0.5;
+    }
+    /* Other */
+    
+    .invalid {
+        background: #ffa6a6;
+    }
+    
+    .left {
+        display: block;
+        float: left;
+    }
+    
+    .middle {
+        text-align: center;
+    }
+    
+    .right {
+        display: block;
+        float: right;
+    }
+    
+    .chart-container {
+        position: relative;
+        width: 100%;
+    }
+    
+    #canvascontainer {
+        position: relative;
+        max-width: 600px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+</style>
+
+<body>
+
+    <form id="resiliencecompass">
+
+        <!-- Intro -->
+        <div class="tab">
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Resiliency%20compass.png" alt="industry selection">
+            <div class="tabgroup">
+                <h2>The Resiliency Compass</h2>
+                <p class="middle">The resiliency compass provides a unique framework to help organizations identify priorities, manage risks and define sustainable strategies to navigate uncertainty and develop a competiitve edge.<br><br>Benchmark your company across eight
+                    identified resiliency dimensions to take the first steps towards becoming a resilient leader.</p>
+            </div>
+
+        </div>
+
+        <!-- Q0 Industry -->
+        <div class="tab">
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Icon%20300x300-Industry-09.svg" alt="product portfolio">
+            <div class="tabgroup">
+                <div class="select-container" style="z-index: 100;">
+                    <div id="industryContainer" class="custom-select">
+                        <select id="industryOption" class="">
+                      <option value="">What industry is your company in?</option>
+                      <option value="Aerospace & Defense">Aerospace & Defense</option>
+                      <option value="Automobiles & Parts">Automobiles & Parts</option>
+                      <option value="Chemicals & Industrial">Chemicals & Industrial</option>
+                      <option value="Communications, Media & Technology">Communications, Media & Technology</option>
+                      <option value="Consumer, Retail & Food">Consumer, Retail & Food</option>
+                      <option value="Health">Health</option>
+                      <option value="Transportation & Travel">Transportation & Travel</option>
+                      <option value="Utilities, Oil & Gas">Utilities, Oil & Gas</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Q1 -->
+        <div class="tab">
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Icon%20300x300-Product%20portfolio%20and%20platform-07.svg" alt="product portfolio">
+            <div class="tabgroup">
+                <h3>Product Portfolio</h3>
+                <p>Products and portfolios should be simple and designed in a way that allows for interchangeable inputs and production arrangements when supply shortages or factory interruptions occur.<br><br><i>e.g. widely accessible and generally interchangeable
+                    product inputs, low complexity in product portfolio)</i></p><br>
+                <p>How resilient is your company with regard to the Product Portfolio?</p>
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q1range"></p>
+                <p class="middle">
+                    <span class="left">low</span>
+                    <span>moderate</span>
+                    <span class="right">high</span>
+                    <p>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="tab">
+
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Icon-300x300-Geography-01.svg" alt="customer orientation">
+            <div class="tabgroup">
+                <h3>Customer Orientation</h3>
+                <p>A smart customer orientation is strategically designed to ensure customer demand can be met while remaining agile and flexible.<br><br><i>(e.g. level of diversity and geographic proximity of client demand, product spend sourced from regional suppliers)</i>
+                </p><br>
+                <p>How resilient is your company with regard to the Customer Orientation?</p>
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q2range"></p>
+                <p class="middle">
+                    <span class="left">low</span>
+                    <span>moderate</span>
+                    <span class="right">high</span>
+                    <p>
+            </div>
+        </div>
+
+
+        <!-- Q3 -->
+        <div class="tab">
+
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Icon%20300x300-Financial-working%20capital-08.svg" alt="customer orientation">
+            <div class="tabgroup">
+                <h3>Financial Viability</h3>
+                <p>Quickly accessing additional capital and adjusting the cost base means firms can create buffer inventories, subsidize key suppliers to ensure input materials, and remain cash positive.<br><br><i>(e.g. ability to quickly access capital for
+                    manufacturing production, revenue you have on hand in cash or cash equivalents)</i></p><br>
+                <p>How resilient is your company with regard to the Financial Viability?</p>
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q3range"></p>
+                <p class="middle">
+                    <span class="left">low</span>
+                    <span>moderate</span>
+                    <span class="right">high</span>
+                    <p>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="tab">
+
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Icon%20300x300-Inbound%20transportation-04.svg" alt="go to market channels">
+
+            <div class="tabgroup">
+                <h3>Go-To-Market Channels</h3>
+                <p>A diversified customer distribution network incorporates multiple channels and a high degree of automation to increase reliability<br><br><i>(e.g. ability to serve demand through multiple channels, capability to establish new go-to-market
+                    channels if primary channel become unavailable or preferences shift)</i></p><br>
+                <p>How resilient is your company with regard to the Go-To-Market Channels?
+
+                    <p><input type="range" min="1" max="10" value="6" class="slider" id="q4range"></p>
+                    <p class="middle">
+                        <span class="left">low</span>
+                        <span>moderate</span>
+                        <span class="right">high</span>
+                        <p>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="tab">
+
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Icon%20300x300-Outbound%20logistics-06.svg" alt="customer orientation">
+            <div class="tabgroup">
+                <h3>Logistics System</h3>
+                <p>Robust and transparent logistics systems are the holy grail for many organizations. Achieving end-to-end visibility across the supply chain, however, is only possible through close collaboration with logistics partners<br><br><i>(e.g. strong
+                    visibility and control over transport, ability to use multiple modes of transportation)</i></p><br>
+                <p>How resilient is your company with regard to the Logistics System?</p>
+
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q5range"></p>
+                <p class="middle">
+                    <span class="left">low</span>
+                    <span>moderate</span>
+                    <span class="right">high</span>
+                    <p>
+            </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="tab">
+
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Icon%20300x300-Manufacturing-05.svg" alt="customer orientation">
+            <div class="tabgroup">
+                <h3>Manufacturing Network</h3>
+                <p>The resilient and responsive manufacturing network ensures production continuity by flexing production locations and products as needed. The consumer, chemicals, and electronics sectors have a good track record in this area and have succeeded
+                    in keeping operations intact despite factory shutdowns during the pandemic<br><br><i>(e.g. production network designed with resiliency in mind, flexibility to repurpose capacity from non-core to core products, level of digital connectivity)</i></p><br>
+                <p>How resilient is your company with regard to the Manufacturing Network?</p>
+
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q6range"></p>
+                <p class="middle">
+                    <span class="left">low</span>
+                    <span>moderate</span>
+                    <span class="right">high</span>
+                    <p>
+            </div>
+        </div>
+
+
+        <!-- Q7 -->
+        <div class="tab">
+
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Icon%20300x300-Suppliers-03.svg" alt="customer orientation">
+            <div class="tabgroup">
+                <h3>Supplier Landscape</h3>
+                <p>Creating advanced supplier relationships is crucial to navigating disruption. Striking a balance between diversifying the supplier base and creating strategic partnerships with key vendors is critical to protecting the availability of
+                    essential input materials.<br><br><i>(e.g. multiple and diverse sources of supply, established alternate options, visibility into supplier tiers beyond immediate suppliers)</i></p><br>
+                <p>How resilient is your company with regard to the Supplier Landscape?</p>
+
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q7range"></p>
+                <p class="middle">
+                    <span class="left">low</span>
+                    <span>moderate</span>
+                    <span class="right">high</span>
+                    <p>
+            </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="tab">
+
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Icon%20300x300-Planning-02.svg" alt="planning capabilities">
+            <div class="tabgroup">
+                <h3>Advanced Planning</h3>
+                <p>New technologies and planning tools spanning the entire product portfolio have enabled shifts in demand to be sensed and acted on rapidly.<br><br><i>(e.g. ability to rapidly sense demand shifts and initiate adaptions quickly, use of analytical
+                    tools for scenario planning)</i></p><br>
+                <p>How resilient is your company with regard to Planning Capabilities?</p>
+
+                <p><input type="range" min="1" max="10" value="6" class="slider" id="q8range"></p>
+                <p class="middle">
+                    <span class="left">low</span>
+                    <span>moderate</span>
+                    <span class="right">high</span>
+                    <p>
+            </div>
+        </div>
+
+
+        <!-- Process -->
+        <div class="tab">
+            <img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Icon%20300x300-Ready-10.svg" alt="ready">
+            <div class="tabgroup">
+                <h3>Ready?</h3>
+                <p class="middle">Are you ready to see how you compare against your industries leaders?<br><br>We've benchmarked your inputs against 400+ senior executives who are responsible for operations and supply chain at over 350 companies.<br><br>For a full assessment,
+                    reach out to one our experts to discuss how we can help your business become a resilient leader.</p>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="tab">
+            <div class="tabgroup">
+            </div>
+            <div class="chart-container">
+                <div id="canvascontainer">
+                    <canvas id="compass" style="position: absolute;"></canvas>
+                    <div><img src="https://raw.githubusercontent.com/ChristopherJamesPilling/ChristopherJamesPilling.github.io/main/Resiliency%20compass.png" style="width: 100%; height: 100%;"></div>
+                </div>
+                <p class="middle">
+                    <span class="dot" style="background-color: rgba(120, 35, 220); opacity: 0.6;"></span> Your assessment
+                    <span class="dot" style="background-color: rgba(192, 192, 192); opacity: 1;"></span> Industry leaders
+                </p>
+            </div>
+        </div>
+
+        <!-- Previous/Next buttons -->
+        <div style="overflow:auto;">
+            <div id="btnplace" class="middle">
+                <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                <button type="button" id="nextBtn" onclick="nextPrev(1)">Start</button>
+            </div>
+        </div>
+
+        <!-- Circles which indicates the steps of the form: -->
+        <div id="steps">
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+        </div>
+    </form>
+
+    <script>
+        // Range Control
+        const inputElements = document.querySelectorAll('[type="range"]');
+
+        const handleInput = (inputElement) => {
+            let isChanging = false;
+
+            const setCSSProperty = () => {
+                let percent =
+                    ((inputElement.value - inputElement.min) /
+                        (inputElement.max - inputElement.min)) *
+                    100;
+                if (inputElement.value < 3) {
+                    percent = percent + 1;
+                } else if (inputElement.value > 7) {
+                    percent = percent - 1;
+                }
+
+                inputElement.style.setProperty("--webkitProgressPercent", `${percent}%`);
+            }
+
+            // Set event listeners
+            const handleMove = () => {
+                if (!isChanging) return;
+                setCSSProperty();
+            };
+            const handleUpAndLeave = () => isChanging = false;
+            const handleDown = () => isChanging = true;
+
+            // Desktop
+            inputElement.addEventListener("mousemove", handleMove);
+            inputElement.addEventListener("mousedown", handleDown);
+            inputElement.addEventListener("mouseup", handleUpAndLeave);
+            inputElement.addEventListener("mouseleave", handleUpAndLeave);
+            inputElement.addEventListener("click", setCSSProperty);
+
+            // Mobile
+            inputElement.addEventListener("touchmove", handleMove, {
+                passive: true
+            });
+            inputElement.addEventListener("touchstart", handleDown, {
+                passive: true
+            });
+            inputElement.addEventListener("touchend", handleUpAndLeave, {
+                passive: true
+            });
+
+            // Init input
+            setCSSProperty();
+        }
+
+
+        // Selection Control
+        var x, i, j, l, ll, selElmnt, a, b, c;
+        /* Look for any elements with the class "custom-select": */
+        x = document.getElementsByClassName("custom-select");
+        zZ = document.getElementById("industryContainer");
+        l = x.length;
+        for (i = 0; i < l; i++) {
+            selElmnt = x[i].getElementsByTagName("select")[0];
+            ll = selElmnt.length;
+            /* For each element, create a new DIV that will act as the selected item: */
+            a = document.createElement("DIV");
+            a.setAttribute("class", "select-selected");
+            a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+            x[i].appendChild(a);
+            /* For each element, create a new DIV that will contain the option list: */
+            b = document.createElement("DIV");
+            b.setAttribute("class", "select-items select-hide");
+            for (j = 1; j < ll; j++) {
+                /* For each option in the original select element,
+                create a new DIV that will act as an option item: */
+                c = document.createElement("DIV");
+                c.innerHTML = selElmnt.options[j].innerHTML;
+                c.addEventListener("click", function(e) {
+                    /* When an item is clicked, update the original select box,
+                    and the selected item: */
+                    var y, i, k, s, h, sl, yl;
+                    s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+                    sl = s.length;
+                    h = this.parentNode.previousSibling;
+                    for (i = 0; i < sl; i++) {
+                        if (s.options[i].innerHTML == this.innerHTML) {
+                            s.selectedIndex = i;
+                            h.innerHTML = this.innerHTML;
+                            y = this.parentNode.getElementsByClassName("same-as-selected");
+                            yl = y.length;
+                            for (k = 0; k < yl; k++) {
+                                y[k].removeAttribute("class");
+                            }
+                            this.setAttribute("class", "same-as-selected");
+                            break;
+                        }
+                    }
+                    h.click();
+                });
+                b.appendChild(c);
+            }
+            x[i].appendChild(b);
+            a.addEventListener("click", function(e) {
+                /* When the select box is clicked, close any other select boxes,
+                and open/close the current select box: */
+                e.stopPropagation();
+                closeAllSelect(this);
+                this.nextSibling.classList.toggle("select-hide");
+                this.classList.toggle("select-arrow-active");
+                zZ.className = "custom-select";
+            });
+        }
+
+        function closeAllSelect(elmnt) {
+            /* A function that will close all select boxes in the document,
+            except the current select box: */
+            var x, y, i, xl, yl, arrNo = [];
+            x = document.getElementsByClassName("select-items");
+            y = document.getElementsByClassName("select-selected");
+            xl = x.length;
+            yl = y.length;
+            for (i = 0; i < yl; i++) {
+                if (elmnt == y[i]) {
+                    arrNo.push(i)
+                } else {
+                    y[i].classList.remove("select-arrow-active");
+                }
+            }
+            for (i = 0; i < xl; i++) {
+                if (arrNo.indexOf(i)) {
+                    x[i].classList.add("select-hide");
+                }
+            }
+        }
+
+        /* If the user clicks anywhere outside the select box,
+        then close all select boxes: */
+        document.addEventListener("click", closeAllSelect);
+
+        inputElements.forEach(handleInput)
+
+        // Color scheme for compass
+        const compassColorScheme = [
+            'rgb(53, 71, 137)',
+            'rgb(54, 167, 233)',
+            'rgb(141, 196, 239)',
+            'rgb(180, 215, 245)',
+            'rgb(192, 192, 192)',
+            'rgb(170, 170, 170)',
+            'rgb(124, 124, 124)',
+            'rgb(69, 69, 69)'
+        ];
+
+        let resultData = [];
+
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        showTab(currentTab); // Display the current tab
+
+        function showTab(n) {
+            document.getElementById('resiliencecompass').scrollIntoView();
+            // This function will display the specified tab of the form...
+            var x = document.getElementsByClassName("tab");
+            x[n].style.display = "block";
+            //... and fix the Previous/Next buttons:
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+                document.getElementById("steps").style.display = "none";
+                document.getElementById("nextBtn").innerHTML = "Start";
+            } else if (n == (x.length - 2)) {
+                document.getElementById("nextBtn").innerHTML = "View Results";
+                document.getElementById("prevBtn").style.display = "none";
+                document.getElementById("steps").style.display = "none";
+
+                let sliders = document.getElementsByClassName("slider");
+                let industryOption = document.getElementById("industryOption").value;
+
+                // Inputs
+                for (let i = 0; i < sliders.length; i++) {
+                    let rstvalue = sliders[i].value
+                    resultData.push(Number(rstvalue));
+                }
+
+                // Generate compass/chart
+                new Chart("compass", {
+                    type: 'radar',
+                    data: {
+                        labels: [
+                            'Product portfolio',
+                            'Customer orientation',
+                            'Financial viability',
+                            'Go-to-market channels',
+                            'Logistics systems',
+                            'Manufacturing network',
+                            'Supplier landscape',
+                            'Advanced planning'
+                        ],
+                        datasets: [{
+                            label: 'Your assessment',
+                            data: resultData,
+                            fill: true,
+                            backgroundColor: 'rgba(120, 35, 220, 0.2)',
+                            borderWidth: 0,
+                            pointRadius: 9,
+                            pointBackgroundColor: 'rgba(120, 35, 220, 0.6)'
+                        }, {
+                            label: industryOption + ' leaders',
+                            data: benchmark["Leader"][industryOption],
+                            fill: true,
+                            backgroundColor: 'rgba(192, 192, 192, 0.4)',
+                            borderWidth: 0,
+                            pointRadius: 9,
+                            pointBackgroundColor: 'rgba(192, 192, 192)'
+                        }]
+                    },
+                    options: {
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: true,
+                                position: 'nearest'
+                            }
+                        },
+                        interaction: {
+                            intersect: true,
+                            mode: 'index',
+                        },
+                        scales: {
+                            r: {
+                                grid: {
+                                    display: false
+                                },
+                                pointLabels: {
+                                    display: false
+                                },
+                                ticks: {
+                                    display: false
+                                },
+                                angleLines: {
+                                    display: false
+                                },
+                                startAngle: 22.5,
+                                min: 0,
+                                max: 14
+                            }
+                        },
+                        elements: {
+                            line: {
+                                borderWidth: 3
+                            }
+                        }
+                    }
+                });
+
+            } else if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").style.display = "none";
+                document.getElementById("prevBtn").style.display = "none";
+
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Next";
+                document.getElementById("prevBtn").style.display = "inline";
+                document.getElementById("steps").style.display = "block";
+                fixStepIndicator(n)
+            }
+
+        }
+
+        function nextPrev(n) {
+            // This function will figure out which tab to display
+            var x = document.getElementsByClassName("tab");
+            // Exit the function if any field in the current tab is invalid:
+            if (n == 1 && !validateForm()) return false;
+            // Hide the current tab:
+            x[currentTab].style.display = "none";
+            // Increase or decrease the current tab by 1:
+            currentTab = currentTab + n;
+            // if you have reached the end of the form...
+            if (currentTab >= x.length) {
+                // ... the form gets submitted:
+                document.getElementById("resiliencecompass");
+                return false;
+            }
+            // Otherwise, display the correct tab:
+            showTab(currentTab);
+        }
+
+        function validateForm() {
+            // This function deals with validation of the form fields
+            var x, y, z, i, valid = true;
+            x = document.getElementsByClassName("tab");
+
+            if (currentTab == 1) {
+                y = document.getElementById("industryOption");
+                if (y.value == "") {
+                    // add an "invalid" class to the field:
+                    z = document.getElementById("industryContainer");
+                    z.className += " invalid";
+                    // and set the current valid status to false
+                    valid = false;
+                }
+            }
+            // If the valid status is true, mark the step as finished and valid:
+            if (valid) {
+                document.getElementsByClassName("step")[currentTab].className += " finish";
+            }
+            return valid; // return the valid status
+        }
+
+        function fixStepIndicator(n) {
+            // This function removes the "active" class of all steps...
+            var i, x = document.getElementsByClassName("step");
+            for (i = 0; i < x.length; i++) {
+                x[i].className = x[i].className.replace(" active", "");
+            }
+            //... and adds the "active" class on the current step:
+            x[n].className += " active";
+        }
+
+        const benchmark = {
+            "Leader": {
+                "Aerospace & Defense": [8.6, 9, 9, 9.2, 9.4, 8.4, 8.8, 9],
+                "Automobiles & Parts": [8.33, 8.67, 9, 7.67, 9, 8, 8, 7.67],
+                "Chemicals & Industrial": [8.5, 8.5, 9, 8.5, 9, 8.5, 8.5, 9],
+                "Communications, Media & Technology": [8.5, 8, 8.17, 8.33, 8.83, 8.5, 8.83, 8.17],
+                "Consumer, Retail & Food": [8.53, 8.37, 8.37, 8.42, 8.37, 8.63, 8.26, 8.79],
+                "Health": [0, 0, 0, 0, 0, 0, 0, 0],
+                "Transportation & Travel": [9, 8, 7.67, 8.33, 8.67, 8.33, 8.67, 7.67],
+                "Utilities, Oil & Gas": [8.67, 9.33, 8.67, 9, 9.67, 9, 9.33, 7.67],
+                "Other": [7, 9, 9, 8, 8, 9, 7, 8]
+            },
+            "Laggard": {
+                "Aerospace & Defense": [4.33, 6, 6, 6, 5.67, 6, 5.67, 5.67],
+                "Automobiles & Parts": [5.67, 5.47, 6, 5.13, 5.33, 5.53, 5.27, 5.93],
+                "Chemicals & Industrial": [5.78, 5.95, 5.61, 5.73, 4.92, 5.61, 4.97, 5.23],
+                "Communications, Media & Technology": [4.88, 5.84, 4.82, 6.01, 5.86, 5.93, 5.83, 5.36],
+                "Consumer, Retail & Food": [5.64, 5.64, 5.49, 5.57, 5.52, 5.07, 5.63, 5.22],
+                "Health": [4.51, 4.17, 5.15, 5.59, 5.58, 4.92, 4.8, 4.97],
+                "Transportation & Travel": [5.5, 5.75, 5.38, 5.5, 5.38, 5.63, 5.63, 5.63],
+                "Utilities, Oil & Gas": [7.25, 4.75, 5.75, 5.75, 6.75, 6.5, 5.5, 5.75],
+                "Other": [4.33, 4.67, 6, 4.33, 6.33, 6.33, 3.67, 6.67]
+            }
+        }
+    </script>
+
+</body>
+
+</html>
