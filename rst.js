@@ -147,6 +147,7 @@ var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
 
 function showTab(n) {
+    document.getElementById('resiliencecompass').scrollIntoView();
     // This function will display the specified tab of the form...
     var x = document.getElementsByClassName("tab");
     x[n].style.display = "block";
@@ -192,7 +193,7 @@ function showTab(n) {
                     pointRadius: 9,
                     pointBackgroundColor: 'rgba(120, 35, 220, 0.6)'
                 }, {
-                    label: 'Industry leaders',
+                    label: industryOption + ' leaders',
                     data: benchmark["Leader"][industryOption],
                     fill: true,
                     backgroundColor: 'rgba(192, 192, 192, 0.4)',
@@ -207,7 +208,8 @@ function showTab(n) {
                         display: false
                     },
                     tooltip: {
-                        enabled: true
+                        enabled: true,
+                        position: 'nearest'
                     }
                 },
                 interaction: {
@@ -226,7 +228,7 @@ function showTab(n) {
                             display: false
                         },
                         angleLines: {
-                            color: '#ccc'
+                            display: false
                         },
                         startAngle: 22.5,
                         min: 0,
