@@ -15,11 +15,11 @@ body {
     min-height: 500px;
 }
 
-h1 {
+h2 {
     text-align: center;
 }
 
-h2 {
+h3 {
     text-align: center;
 }
 
@@ -60,7 +60,7 @@ img {
 button {
     background-color: #ffffff;
     color: #7823dc;
-    width: 140px;
+    min-width: 140px;
     border: 2px solid #7823dc;
     margin-top: 20px;
     padding: 10px 20px;
@@ -288,7 +288,8 @@ input[type="range"]::-ms-fill-lower {
     margin-top: 40px;
 }
 
-.step {
+.step,
+.dot {
     height: 15px;
     width: 15px;
     margin: 0 2px;
@@ -342,9 +343,4 @@ input[type="range"]::-ms-fill-lower {
     max-width: 600px;
     left: 50%;
     transform: translateX(-50%);
-}
-
-#compasschart {
-    display: inline !important;
-    width: 100%;
 }
