@@ -17,11 +17,11 @@
 
         function one()
         {
-            Office.context.ui.messageParent("Picked 1");
+            Office.context.ui.messageParent("Picked 1", { targetOrigin: "*" });
         }
 
         function two() {
-            Office.context.ui.messageParent("Picked 2");
+            Office.context.ui.messageParent("Picked 2", { targetOrigin: "*" });
         }
         
     </script>
