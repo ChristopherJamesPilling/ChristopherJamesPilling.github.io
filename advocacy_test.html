@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image on Left, Info on Right</title>
+<style>
+  * {
+    font-family: 'Segoe UI', 'Segoe UI Web (West European)', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
+  }
+
+  .item {
+    width: 100%;
+    display: flex;
+    align-items: top;
+    border-bottom-color: rgb(237, 235, 233);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+  }
+
+  .image {
+    margin-right: 20px;
+  }
+
+  .image img {
+    max-width: 126px;
+    height: 96px;
+    object-fit: cover;
+    overflow-clip-margin: content-box;
+    overflow: clip;
+  }
+
+  .tag {
+    height: auto;
+    display: inline;
+    padding: 2px 8px;
+    margin-bottom: 2px;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-transform: uppercase;
+    background-color: rgb(110, 106, 105);
+    color: rgb(255, 255, 255);
+  }
+
+  .tag.latest {
+  background-color: rgb(96, 28, 176);
+
+  }
+
+  .tag.linkedin {
+  background-color: rgb(0, 120, 212);
+  }
+  
+  .title {
+    margin-top: 3px;
+    margin-bottom: 2px;
+    padding-bottom: 4px;
+    color: rgb(50, 49, 48);
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+  }
+
+  .blurb {
+    margin-bottom: 6px;
+    color: rgb(96, 94, 92);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box; 
+		-webkit-box-orient: vertical; 
+		-webkit-line-clamp: 2; 
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+
+  #container {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  #advocacyFeed {
+    overflow-y: scroll; /* Enable scrolling */
+    height: calc(100% + 20px); /* Take full height of container */
+    margin-right: -20px; /* Hide the scroll bar space */
+  }
+
+</style>
+</head>
+<body>
+
+  <div id="container">
+    <div id="advocacyFeed"></div>
+  </div>
+
+</body>
+</html>
+
+
+
+
+<script>
+  fetch('https://zapier.com/engine/rss/14208513/536F6369616C204164766F63616379')
+      .then(response => response.text())
+      .then(data => {
+          const parser = new DOMParser();
+          const xml = parser.parseFromString(data, 'application/xml');
+  
+          const items = xml.querySelectorAll('item');
+  
+          items.forEach(item => {
+              let title = item.querySelector('title')?.textContent || "";
+              title = title ? title.replace(/ - Kearney$/, '') : "";
+  
+              const link = item.querySelector('link')?.textContent || "";
+              const image = item.querySelector('enclosure')?.getAttribute('url') || "";
+              const data = JSON.parse(item.querySelector('description')?.textContent ?? "{}");
+  
+              let type = data && data.type ? data.type : "";
+              switch (type) {
+                case 'article':
+                    type = 'latest content';
+                    break;
+                case 'linkedin_reshare':
+                    type = 'linkedin reshare';
+                    break;
+                case 'photo':
+                    type = 'photo';
+                    break;
+                default:
+                    break;
+              }
+  
+              const blurb = data && data.blurb ? data.blurb : "";
+  
+              const divItem = document.createElement('div');
+              divItem.classList.add('item');
+  
+              divItem.innerHTML = `
+                  <div class="image">
+                      <a href="${link}" target="_blank">
+                          <img loading="lazy" src="${image}">
+                      </a>
+                  </div>
+                  <div class="info">
+                      <div class="tag ${type}">
+                        ${type}
+                      </div>   
+                            
+                      <a href="${link}" target="_blank">
+                        <div class="title">${title}</div>
+                        <div class="blurb">${blurb}</div>
+                      </a>
+  
+                </div>
+              `;
+  
+              document.getElementById('advocacyFeed').appendChild(divItem);
+          });
+      })
+      .catch(error => console.error('Error fetching social advocacy feed:', error))
+  </script>
+  
+
+
+</body>
+</html>
