@@ -113,15 +113,24 @@ body {
           const xml = parser.parseFromString(data, 'application/xml');
   
           const items = xml.querySelectorAll('item');
+
+          const processedSources = new Set();
   
           items.forEach(item => {
+            const data = JSON.parse(item.querySelector('description')?.textContent ?? "{}");
+            let source = data && data.source ? data.source : "";
+
+            if (source == "" || processedSources.has(source)) {
+                return;
+            }
+            processedSources.add(source);
+
+
               let title = item.querySelector('title')?.textContent || "";
               title = title ? title.replace(/ - Kearney$/, '') : "";
-  
-              const link = item.querySelector('link')?.textContent || "";
+
+              const link = item.querySelector('link')?.textContent || "";  
               const image = item.querySelector('enclosure')?.getAttribute('url') || "";
-              const data = JSON.parse(item.querySelector('description')?.textContent ?? "{}");
-  
               let type = data && data.type ? data.type : "";
               switch (type) {
                 case 'article':
@@ -137,7 +146,10 @@ body {
                     break;
               }
   
-              const blurb = data && data.blurb ? data.blurb : "";
+              let blurb = data && data.blurb ? data.blurb : "";
+              if (blurb === "Your industry" || blurb === "Life at Kearney") {
+                blurb = "";
+              }
   
               const divItem = document.createElement('div');
               divItem.classList.add('item');
