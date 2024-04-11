@@ -120,7 +120,7 @@ body {
             const data = JSON.parse(item.querySelector('description')?.textContent ?? "{}");
             let source = data && data.source ? data.source : "";
 
-            if (source == "" || processedSources.has(source)) {
+            if (source !== "" && processedSources.has(source)) {
                 return;
             }
             processedSources.add(source);
