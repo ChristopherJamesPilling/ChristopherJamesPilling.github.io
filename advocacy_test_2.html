@@ -131,10 +131,11 @@ body {
             }
             processedSources.add(source);
 
-
               let title = item.querySelector('title')?.textContent || "";
+              title = title ? title.replace(/ - Middle East - Kearney$/, '') : "";
+              title = title ? title.replace(/ - Kearney DACH - Kearney$/, '') : "";
               title = title ? title.replace(/ - Kearney$/, '') : "";
-
+              
               const link = item.querySelector('link')?.textContent || "";  
               const image = item.querySelector('enclosure')?.getAttribute('url') || "";
               let type = data && data.type ? data.type : "";
@@ -153,7 +154,7 @@ body {
               }
   
               let blurb = data && data.blurb ? data.blurb : "";
-              if (blurb === "Your industry" || blurb === "Life at Kearney") {
+              if (blurb === "Your industry" || blurb === "Life at Kearney" || blurb==="Our best and latest thinking sent to your inbox") {
                 blurb = "";
               }
   
